@@ -4,12 +4,12 @@ import lombok.NoArgsConstructor;
 import org.kate.notes.domain.Note;
 import org.kate.notes.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -49,9 +49,22 @@ public class NoteController {
         return "redirect:/notes";
     }
 
+    @GetMapping("/{id}")
+    public String updateComment(Model model, @PathVariable Long id) {
+        addAttributes(model, noteRepository.findById(id).get());
+        return "notes-form";
+    }
+
+    @GetMapping("/{id}/delete")
+    public String delete(@PathVariable Long id) {
+        noteRepository.deleteById(id);
+        return "redirect:/notes";
+    }
+
     private void addAttributes(Model model, Note note) {
         model.addAttribute("note", note);
         model.addAttribute("priorityTypes", Note.Priority.values());
-        model.addAttribute("notes", noteRepository.findAll());
+        Pageable sortedByCreated = PageRequest.of(0, 6, Sort.by("created").descending());
+        model.addAttribute("notes", noteRepository.findAll(sortedByCreated));
     }
 }
