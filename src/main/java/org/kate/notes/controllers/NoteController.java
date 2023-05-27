@@ -29,6 +29,21 @@ public class NoteController {
 
     @PostMapping
     public String submit(Model model, Note note) {
+        if (note.getName().isEmpty()) {
+            addAttributes(model, note);
+            model.addAttribute("errorName", "Please enter name of your note");
+            return "notes-form";
+        }
+        if (note.getText().isEmpty()) {
+            addAttributes(model, note);
+            model.addAttribute("errorText", "Please enter text of your note");
+            return "notes-form";
+        }
+        if (note.getPriority() == null) {
+            addAttributes(model, note);
+            model.addAttribute("errorPriority", "Please choose priority of your note");
+            return "notes-form";
+        }
         note.setCreated(LocalDateTime.now());
         noteRepository.save(note);
         return "redirect:/notes";
