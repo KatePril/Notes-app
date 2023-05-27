@@ -30,7 +30,21 @@
                 <input class="btn btn-outline-primary btn-lg" type="submit" name="submit" value="Submit">
             </div>
         </form>
-
+    </div>
+    <div class="container-md row row-cols-2 mx-auto mt-5 px-auto">
+        <div class="card text-bg-info mb-3 p-0 m-3" style="max-width: 25rem;" th:each="note : ${notes}">
+            <div class="card-header" style="width:100%; display:flex; justify-content:space-around; align-items:center;">
+                <h5 class="mb-0" th:text="${note.name}"></h5>
+                <span class="input-group-text bg-primary text-light" th:text="${note.priority}"></span>
+                <a type="button" class="btn-close"></a>
+            </div>
+            <div class="card-body">
+                <p class="card-text"th:text="${note.text}"></p>
+            </div>
+            <div class="card-footer" style="display:flex; justify-content:center;">
+                <a type="button" class="btn btn-outline-primary">Edit</a>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
